@@ -20,8 +20,8 @@
     "download": true,
     "tags": ["インスト", "ダウンロード可能", "CC BY 4.0"],
     "date": "2025-12-02",
-    "imageClickType": "link",
-    "imageClickUrl": "https://www.youtube.com/watch?v=rmPs2-Gw7VI"
+    "imageClickType": "popup",
+    "imageClickUrl": ""
   },
   {
     "title": "halloween mania.mp3",
@@ -32,8 +32,8 @@
     "download": false,
     "tags": ["インスト"],
     "date": "2025-11-01",
-    "imageClickType": "popup",
-    "imageClickUrl": ""
+    "imageClickType": "link",
+    "imageClickUrl": "https://www.youtube.com/watch?v=rmPs2-Gw7VI"
   },
   {
     "title": "デフォ鯖コンピ「デフォ子よ永遠に！！」",
