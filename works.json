@@ -44,7 +44,7 @@
     "download": false,
     "tags": ["ダウンロード可能", "コンピ"],
     "date": "2025-07-17",
-    "imageClickType": "link", // "link" にすると外部URLへ飛びます（"popup" なら画像拡大）
-    "imageClickUrl": "https://booth.pm/ja/items/7189866" // 飛ばしたい外部の販売ページなどのURL
+    "imageClickType": "link",
+    "imageClickUrl": "https://booth.pm/ja/items/7189866"
   }
 ]
