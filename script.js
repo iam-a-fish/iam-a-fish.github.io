@@ -133,7 +133,7 @@ function setupAudioPlayer(player) {
                 alert('音楽の再生に失敗しました（データ未接続）');
                 playBtn.textContent = '▶ 再生';
             });
-            playBtn.textContent = '⏸ 一時停止';
+            playBtn.textContent = '⏸ 停止';
         } else {
             audio.pause();
             playBtn.textContent = '▶ 再生';
