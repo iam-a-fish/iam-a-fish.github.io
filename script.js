@@ -317,7 +317,7 @@ function initializeControls() {
 }
 
 // 実際に works.json を読み込んで画面を作るメイン処理（画像クリック切り替え対応版）
-fetch('works.json')
+fetch('./works.json')
     .then(response => response.text())
     .then(text => {
         worksData = parseJsonc(text); // グローバルバケツに保存
