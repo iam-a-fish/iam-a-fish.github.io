@@ -415,7 +415,7 @@ function updateWorksDisplay() {
 
             if (item.download) {
                 const fileName = item.audio.split('/').pop();
-                innerContent += `<a href="${item.audio}" download="${fileName}" target="_blank" class="download-link">⬇ DL</a>`;
+                iinnerContent += `<a href="${item.audio}" download="${fileName}" target="_blank" class="download-link">⬇ DL</a>`;
             }
 
             innerContent += `
