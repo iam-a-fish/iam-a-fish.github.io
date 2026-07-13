@@ -1,0 +1,50 @@
+[
+  {
+    "title": "60.mp3",
+    "artist": "魚です、",
+    "artistUrl": "https://x.com/iam_a_fish__",
+    "image": "..\\assets\\images\\kari.jpg",
+    "audio": "https://pub-5d956517ca5641788a5de667a44a3064.r2.dev/60.mp3",
+    "download": true,
+    "tags": ["インスト", "ダウンロード可能", "CC BY 4.0"],
+    "date": "2025-12-03",
+    "imageClickType": "popup",
+    "imageClickUrl": ""
+  },
+{
+    "title": "58.mp3",
+    "artist": "魚です、",
+    "artistUrl": "https://x.com/iam_a_fish__",
+    "image": "..\\assets\\images\\kari.jpg",
+    "audio": "https://pub-5d956517ca5641788a5de667a44a3064.r2.dev/58.mp3",
+    "download": true,
+    "tags": ["インスト", "ダウンロード可能", "CC BY 4.0"],
+    "date": "2025-12-02",
+    "imageClickType": "link",
+    "imageClickUrl": "https://www.youtube.com/watch?v=rmPs2-Gw7VI"
+  },
+  {
+    "title": "halloween mania.mp3",
+    "artist": "魚です、",
+    "artistUrl": "https://x.com/iam_a_fish",
+    "image": "https://i.ytimg.com/an_webp/rmPs2-Gw7VI/mqdefault_6s.webp?du=3000&sqp=CMS709IG&rs=AOn4CLClXckYSUkwVnnjbt1quTiSIYgp0g",
+    "audio": "https://pub-5d956517ca5641788a5de667a44a3064.r2.dev/halloween mania.mp3",
+    "download": false,
+    "tags": ["インスト"],
+    "date": "2025-11-01",
+    "imageClickType": "popup",
+    "imageClickUrl": ""
+  },
+  {
+    "title": "デフォ鯖コンピ「デフォ子よ永遠に！！」",
+    "artist": "デフォ鯖",
+    "artistUrl": "https://x.com/DefoServer",
+    "image": "https://booth.pximg.net/9a6a5470-711b-4eca-9682-b6b3672be499/i/7189866/475b5757-4841-478c-b332-77707e802913_base_resized.jpg",
+    "audio": "",
+    "download": false,
+    "tags": ["ダウンロード可能", "コンピ"],
+    "date": "2025-07-17",
+    "imageClickType": "link", // "link" にすると外部URLへ飛びます（"popup" なら画像拡大）
+    "imageClickUrl": "https://booth.pm/ja/items/7189866" // 飛ばしたい外部の販売ページなどのURL
+  }
+]

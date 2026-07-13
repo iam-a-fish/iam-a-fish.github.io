@@ -1,46 +1,40 @@
 /* ==========================================
-   1. サイト全体の基本設定（ベースをそのまま維持）
+   1. サイト全体の基本設定
    ========================================== */
 html {
   overflow-y: scroll;
 }
 
 body {
-    background-color: #FFFFFF; /* あなたが選んだ白背景 */
-    color: #000000;           /* あなたが選んだ黒文字 */
-    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif; /* 文字をクッキリ綺麗なフォントに */
+    background-color: #FFFFFF;
+    color: #000000;          
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
     text-align: center;
     margin: 0;          
-    padding-top: 120px;        /* メニューバーと被らないよう少し隙間を広げました */
-    line-height: 1.8;          /* 行の間隔を少し広げて読みやすく */
+    padding-top: 120px;        
+    line-height: 1.8;          
 }
 
-/* 最初、ほんぺんの画面は非表示にして隠しておきます */
 #Main {
     display: none;
 }
 
-/* 【追加】最初はトップ以外の画面をすべて隠しておく設定 */
 #Profile, #Works, #Contact {
     display: none;
 }
 
-/* サイト全体のリンク（通常時） */
 a {
-    color: #4a90e2;         /* 好きな色コード（例：明るい青）に変えます */
-    text-decoration: none;  /* リンクの下線を消す設定（お好みで） */
+    color: #4a90e2;         
+    text-decoration: none;  
 }
 
-/* マウスを乗せたとき（ホバー時） */
 a:hover {
-    color: #aaccee;         /* マウスが乗ったときの色（例：メニューバーと同じ青） */
+    color: #aaccee;         
 }
 
-
-/* タイトル（h1）をおしゃれに整える */
 h1 {
     font-size: 26px;
-    letter-spacing: 0.1em;     /* 文字の間隔を少し広げてスマートに */
+    letter-spacing: 0.1em;     
     margin-bottom: 30px;
 }
 
@@ -66,17 +60,16 @@ h1 {
     margin-bottom: 40px;
 }
 
-/* ボタンの文字サイズや余白のバランスを調整 */
 button {
-    font-size: 16px;           /* 少しスマートな大きさに */
+    font-size: 16px;           
     letter-spacing: 0.1em;
     padding: 12px 40px;
     background-color: #FFFFFF;
     color: #000000;
-    border: 1px solid #000000; /* 細い黒線ですっきり */
-    border-radius: 4px;        /* 角をほんの少しだけ丸く */
+    border: 1px solid #000000; 
+    border-radius: 4px;        
     cursor: pointer;
-    transition: 0.3s;          /* ホバー時にじわっと色を変える */
+    transition: 0.3s;          
 }
 
 button:hover {
@@ -89,53 +82,46 @@ button:hover {
    3. Menubar（メニューバー）のデザイン調整
    ========================================== */
 #Menubar {
-    position: fixed;        /* 画面の上側に固定する魔法の言葉 */
-    top: 0;                 /* 一番上にぴったりくっつける */
-    left: 0;                /* 左端にぴったりくっつける */
-    width: 100%;            /* 横幅を画面いっぱいに広げる */
-    background-color: #aaccee; /* あなたが選んだメニューバーの背景色 */
-    padding: 20px 0;        /* 上下に少し隙間（余白）を作る */
-    display: flex;          /* 中身を横並びにする魔法の言葉 */
-    justify-content: center;/* 横並びにした文字を中央に寄せる */
-    gap: 40px;              /* 文字と文字の間のスキマを少し広げました */
+    position: fixed;        
+    top: 0;                 
+    left: 0;                
+    width: 100%;            
+    background-color: #aaccee; 
+    padding: 20px 0;        
+    display: flex;          
+    justify-content: center;
+    gap: 40px;              
     z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* 下側にうっすら影をつけて立体感アップ */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
 }
 
-/* メニューバーの中にあるリンク（文字）の設定 */
 #Menubar a {
-    color: white;           /* 文字の色を白にする */
-    text-decoration: none;  /* リンクの下線を消す */
-    font-weight: bold;      /* 文字を太字にする */
-    font-size: 15px;        /* ほんの少し小さくして洗練された印象に */
+    color: white;           
+    text-decoration: none;  
+    font-weight: bold;      
+    font-size: 15px;        
     letter-spacing: 0.05em;
     transition: 0.3s;
 }
 
-/* マウスを乗せたときに色を変える設定 */
 #Menubar a:hover {
-    color: #2a7cd2;         /* 【変更】淡い青に映える、少し濃く綺麗な青に調整 */
+    color: #2a7cd2;         
 }
 
 
 /* ==========================================
    4. 各コンテンツ画面のレイアウト・見やすさアップ
    ========================================== */
-
-/* 全画面共通：横幅が広がりすぎないようにして見やすく */
-
 #Top, #Profile, #Works, #Contact {
     max-width: 600px;
     margin: 40px auto;
     padding: 0 20px;
 }
 
-/* TOPのレイアウト */
 #Top {
-    text-align: left;          /* 基本は左揃え */
+    text-align: left;          
 }
 
-/* タイトル部分だけは真ん中に寄せる */
 #Top h1, #Top h3, .lead-text {
     text-align: center;
 }
@@ -151,28 +137,26 @@ button:hover {
     margin-bottom: 30px;
 }
 
-/* 連絡先のグループ（メール、Skeb、SNS）を囲む綺麗なボックス */
 .top-group {
-    background-color: #f7f9fa; /* ほんのりグレーの背景 */
+    background-color: #f7f9fa; 
     padding: 20px 25px;
     margin-bottom: 20px;
     border-radius: 8px;
     border: 1px solid #eef2f5;
 }
 
-/* ボックスの中の小さな見出し */
 .top-group h2 {
     font-size: 16px;
     margin-top: 0;
     margin-bottom: 12px;
     color: #000000;
-    border-left: 4px solid #aaccee; /* メニューバーと同じ青色のアクセント線 */
+    border-left: 4px solid #aaccee; 
     padding-left: 10px;
 }
 
 .top-btn {
     display: inline-block;
-    background-color: #000000; /* 黒いかっこいいボタンに */
+    background-color: #000000; 
     color: #FFFFFF !important;
     padding: 8px 20px;
     border-radius: 4px;
@@ -180,31 +164,28 @@ button:hover {
     font-size: 13px;
 }
 .top-btn:hover {
-    background-color: #aaccee; /* マウスを乗せるとメニューバーと同じ青に */
+    background-color: #aaccee; 
     color: #FFFFFF !important;
 }
 
-/* PROFILE（プロフィール）のレイアウト */
 #Profile h2 {
     font-size: 18px;
-    color: #555555;            /* 少しだけ優しい黒に */
+    color: #555555;            
     margin-bottom: 25px;
 }
 
 #Profile p {
-    text-align: left;          /* 長い文章は左揃えにすると圧倒的に読みやすくなります */
-    display: inline-block;     /* 左揃えにしつつ中央に配置する技 */
-    background-color: #f7f9fa; /* 薄いグレーの背景を敷いて文字を引き締める */
+    text-align: left;          
+    display: inline-block;     
+    background-color: #f7f9fa; 
     padding: 25px 35px;
     border-radius: 8px;
 }
 
-/* CONTACT（問い合わせ）のレイアウト */
 #Contact {
-    text-align: left;          /* 基本は左揃え */
+    text-align: left;          
 }
 
-/* タイトル部分だけは真ん中に寄せる */
 #Contact h1, #Contact h3, .lead-text {
     text-align: center;
 }
@@ -214,32 +195,23 @@ button:hover {
     color: #666666;
 }
 
-.lead-text {
-    font-size: 14px;
-    color: #555555;
-    margin-bottom: 30px;
-}
-
-/* 連絡先のグループ（メール、Skeb、SNS）を囲む綺麗なボックス */
 .contact-group {
-    background-color: #f7f9fa; /* ほんのりグレーの背景 */
+    background-color: #f7f9fa; 
     padding: 20px 25px;
     margin-bottom: 20px;
     border-radius: 8px;
     border: 1px solid #eef2f5;
 }
 
-/* ボックスの中の小さな見出し */
 .contact-group h2 {
     font-size: 16px;
     margin-top: 0;
     margin-bottom: 12px;
     color: #000000;
-    border-left: 4px solid #aaccee; /* メニューバーと同じ青色のアクセント線 */
+    border-left: 4px solid #aaccee; 
     padding-left: 10px;
 }
 
-/* SNSリストをすっきり並べる */
 .sns-list {
     list-style: none;
     padding: 0;
@@ -249,39 +221,215 @@ button:hover {
 .sns-list li {
     margin-bottom: 10px;
     font-size: 14px;
-    border-bottom: 1px dashed #eef2f5; /* 項目ごとのうっすらとした区切り線 */
+    border-bottom: 1px dashed #eef2f5; 
     padding-bottom: 10px;
 }
 .sns-list li:last-child {
     border-bottom: none;
     padding-bottom: 0;
 }
-/* Skebボタンをおしゃれにリンク化 */
-.mail-btn {
+
+.mail-btn, .skeb-btn {
     display: inline-block;
-    background-color: #000000; /* 黒いかっこいいボタンに */
+    background-color: #000000; 
     color: #FFFFFF !important;
     padding: 8px 20px;
     border-radius: 4px;
     font-weight: bold;
     font-size: 13px;
 }
-.mail-btn:hover {
-    background-color: #aaccee; /* マウスを乗せるとメニューバーと同じ青に */
+.mail-btn:hover, .skeb-btn:hover {
+    background-color: #aaccee; 
     color: #FFFFFF !important;
 }
 
-/* Skebボタンをおしゃれにリンク化 */
-.skeb-btn {
-    display: inline-block;
-    background-color: #000000; /* 黒いかっこいいボタンに */
-    color: #FFFFFF !important;
-    padding: 8px 20px;
-    border-radius: 4px;
-    font-weight: bold;
-    font-size: 13px;
+/* ==========================================
+   5. 自作メディアプレイヤー用スタイル（更新版）
+   ========================================== */
+/* （これまでのプレイヤーのスタイルはそのまま維持） */
+
+/* ★追加：ソート・期間指定パネルの見た目 */
+.works-control-panel {
+    background-color: #f7f9fa;
+    border: 1px solid #eef2f5;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin: 0 auto 30px auto;
+    max-width: 560px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    font-size: 14px;
 }
-.skeb-btn:hover {
-    background-color: #aaccee; /* マウスを乗せるとメニューバーと同じ青に */
-    color: #FFFFFF !important;
+
+.control-group-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.works-control-panel select, 
+.works-control-panel input[type="date"] {
+    padding: 4px 8px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    background-color: #ffffff;
+    font-family: inherit;
+}
+
+#clear-date-btn {
+    font-size: 12px;
+    padding: 4px 12px;
+    background-color: #ffffff;
+    color: #666666;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+#clear-date-btn:hover {
+    background-color: #eeeeee;
+}
+
+@media (max-width: 600px) {
+    .works-control-panel {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+.tag-filter-container {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.filter-btn {
+    font-size: 13px;
+    padding: 6px 16px;
+    background-color: #f7f9fa;
+    color: #333333;
+    border: 1px solid #eef2f5;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.filter-btn.active, .filter-btn:hover {
+    background-color: #aaccee;
+    color: #FFFFFF;
+    border-color: #aaccee;
+}
+.audio-player {
+    background: #f7f9fa; 
+    border: 1px solid #eef2f5;
+    padding: 25px;
+    border-radius: 12px;
+    margin: 0 auto 30px auto;
+    max-width: 340px;
+    box-sizing: border-box;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+/* ★変更：画像リンクにホバーした時、少し拡大して「クリックできる感」を出す */
+.img-popup-link {
+    display: block;
+    overflow: hidden;
+    border-radius: 8px;
+}
+.player-img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    background-color: #ddd;
+    transition: transform 0.3s;
+    display: block;
+}
+.img-popup-link:hover .player-img {
+    transform: scale(1.05); /* マウスを乗せると少しズーム */
+}
+
+.player-info {
+    margin: 15px 0 10px 0;
+}
+.track-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 0 5px 0;
+    color: #000000;
+}
+.artist-name {
+    font-size: 13px;
+    color: #666666;
+    margin: 0 0 8px 0;
+}
+.player-tags span {
+    display: inline-block;
+    font-size: 11px;
+    color: #aaccee;
+    background: #ffffff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid #eef2f5;
+    margin-right: 4px;
+}
+.seek-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 15px;
+    font-size: 12px;
+    color: #666666;
+}
+.seek-bar {
+    flex-grow: 1;
+    height: 6px;
+    cursor: pointer;
+    accent-color: #aaccee;
+}
+
+/* ボタンエリアを横並びにする調整 */
+.player-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.custom-play-btn {
+    font-size: 14px;
+    padding: 10px 35px;
+    background-color: #000000;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.custom-play-btn:hover {
+    background-color: #aaccee;
+    color: #FFFFFF;
+}
+
+/* ★追加：ダウンロードボタンの見た目 */
+.download-link {
+    display: inline-block;
+    font-size: 13px;
+    padding: 9px 18px;
+    background-color: #ffffff;
+    color: #000000 !important;
+    border: 1px solid #000000;
+    border-radius: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.2s;
+}
+.download-link:hover {
+    background-color: #000000;
+    color: #ffffff !important;
 }
