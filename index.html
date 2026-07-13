@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>さかなのさいと</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ① 最初の画面 -->
+    <div id="Enter">
+        <h1>さかなのさいと</h1>
+        <button id="Button">Enter</button>
+    </div>
+
+    <!-- ② あとの画面（最初は消しておく） -->
+    <div id="Main">
+        
+        <!-- 上側のメニューバー（aタグにIDを追加しました） -->
+        <nav id="Menubar">
+            <a href="#" id="Menu-Top">TOP</a>
+            <a href="#" id="Menu-Profile">PROFILE</a>
+            <a href="#" id="Menu-Works">WORKS</a>
+            <a href="#" id="Menu-Contact">CONTACT</a>
+        </nav>
+
+        <!-- メインのコンテンツエリア -->
+        <!-- 最初に表示されるトップ画面 -->
+        <div id="Top">
+            <h1>人気の動画</h1>
+            <iframe id="yt-video" width="560" height="315" 
+                src="https://www.youtube.com/embed/Xb0sMkEa2vc?enablejsapi=1" 
+                frameborder="0" allowfullscreen></iframe>
+            </iframe>
+            <h1>LINKS</h1>
+            <div class="top-group">
+            <h2>曲を投稿しています。</h2>
+            <p><a href="https://www.youtube.com/@iam_a_fish">Youtube</a> / <a href="https://www.nicovideo.jp/user/124453388">Nicovideo</a></p>
+            <p><a href="https://www.youtube.com/@iam_a_fish" target="_blank" class="top-btn">Youtube</a> <a href="https://www.nicovideo.jp/user/124453388" target="_blank" class="top-btn">Nicovideo</a></p>
+            </div>
+            <div class="top-group">
+            <h2>ゲームなどで遊べます。</h2>
+            <p><a href="https://unityroom.com/users/iam_a_fish">Unityroom</a> / <a href="https://iam-a-fish.itch.io">Itch.io</a></p>
+            <p><a href="https://unityroom.com/users/iam_a_fish" target="_blank" class="top-btn">Unityroom</a> <a href="https://iam-a-fish.itch.io" target="_blank" class="top-btn">Itch.io</a></p>
+            </div>
+            <div class="top-group">
+            <h2>Twitter(旧X)。告知など。</h2>
+            <p><a href="https://x.com/iam_a_fish">デフォ子垢</a> / <a href="https://x.com/iam_a_fish__">創作垢</a></p>
+            <p><a href="https://x.com/iam_a_fish" target="_blank" class="top-btn">デフォ子垢</a> <a href="https://x.com/iam_a_fish__" target="_blank" class="top-btn">創作垢</a></p>
+            </div>
+            <div class="top-group">
+            <h2>しょぼい記事を読めます。</h2>
+            <p><a href="https://note.com/sakanadesu">Note</a></p>
+            <p><a href="https://note.com/sakanadesu" target="_blank" class="top-btn">Note</a></p>
+            </div>
+        </div>
+
+        <!-- 【追加】プロフィール画面 -->
+        <div id="Profile">
+            <h1>PROFILE</h1>
+            <h2>魚です、(iam_a_fish)</h2>
+            <p>
+                「魚です、」です。「、」まで名前です。<br>
+                <br>
+                2007/6/16生まれ。<br>
+                明るくも暗くもない曲を作ります。<br>
+                使用DAWはCubase proです。
+            </p>
+        </div>
+
+        <!-- 【追加】作品画面 -->
+        <div id="Works">
+            <h1>WORKS</h1>
+            <p>ここに自作の音楽プレイヤーなどを設置します。</p>
+        </div>
+
+        <!-- 【追加】お問い合わせ画面 -->
+        <div id="Contact">
+            <h1>CONTACT</h1>
+            <h3>お気軽にどうぞ</h3>
+            <p class="lead-text">依頼、感想、質問、要望などは、以下よりお送りください。</p>
+
+            <!-- グループ1：直接の連絡先 -->
+            <div class="contact-group">
+              <h2>メール</h2>
+                <p><a href="mailto:iam.a.fish.desu@gmail.com">iam.a.fish.desu@gmail.com</a></p>
+                <p><a href="mailto:iam.a.fish.desu@gmail.com" target="_blank" class="mail-btn">メールを送る</a></p>
+            </div>
+
+            <!-- グループ2：コミッション（Skeb） -->
+            <div class="contact-group">
+                <h2>Skeb</h2>
+                <p><a href="https://skeb.jp/@iam_a_fish__">https://skeb.jp/@iam_a_fish__</a></p>
+                <p><a href="https://skeb.jp/@iam_a_fish__" target="_blank" class="skeb-btn">Skebで依頼する</a></p>
+            </div>
+
+            <!-- グループ3：SNS（箇条書きでスッキリ並べる） -->
+            <div class="contact-group">
+                <h2>SNS</h2>
+                <ul class="sns-list">
+                    <li><strong>X (Twitter):</strong> @iam_a_fish / @iam_a_fish__</li>
+                    <li><strong>Bluesky:</strong> @iamafish.bsky.social</li>
+                    <li><strong>Instagram:</strong> @iam_a_fish_desu</li>
+                    <li><strong>Discord:</strong> iam_a_fish</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+        
+
+
+    </div>
+
+    <script src="script.js""></script>
+</body>
+</html>
