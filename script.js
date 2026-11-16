@@ -206,7 +206,7 @@ const includedTags = new Set();
 
 function matchesTagFilter(item) {
     const tags = Array.isArray(item.tags) ? item.tags : [];
-    return [...includedTags].every(tag => tags.includes(tag));
+    return includedTags.size === 0 || [...includedTags].some(tag => tags.includes(tag));
 }
 
 // タグ検索ボタンを自動生成する関数
