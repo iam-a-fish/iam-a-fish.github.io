@@ -655,6 +655,12 @@ function openSharedWorkFromHash() {
 
     const workCard = document.getElementById(workId);
     if (workCard) {
+        workCard.classList.remove('work-card-highlight');
+        void workCard.offsetWidth;
+        workCard.classList.add('work-card-highlight');
+        workCard.addEventListener('animationend', () => {
+            workCard.classList.remove('work-card-highlight');
+        }, { once: true });
         window.requestAnimationFrame(() => {
             workCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
