@@ -380,6 +380,56 @@ button:hover {
     max-width: 1040px;
 }
 
+.work-release {
+    margin: 0 0 32px;
+    padding: 20px 24px;
+    background: #f7f9fa;
+    border: 1px solid #eef2f5;
+    border-radius: 12px;
+    text-align: left;
+}
+
+.work-release h2 {
+    margin: 0 0 8px;
+    font-size: 18px;
+}
+
+.work-release h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.work-release .work-release-date {
+    margin: 2px 0 8px;
+    color: #666;
+    font-size: 14px;
+}
+
+.work-release-list {
+    display: grid;
+    gap: 12px;
+    margin: 16px 0;
+}
+
+.work-release-item {
+    padding: 16px;
+    background: #fff;
+    border: 1px solid #eef2f5;
+    border-radius: 8px;
+}
+
+.work-release-item p {
+    margin: 8px 0 12px;
+}
+
+.work-release .work-release-pages-title {
+    margin: 20px 0 12px;
+}
+
+.work-release p {
+    margin: 8px 0 16px;
+}
+
 .work-card {
     background: #f7f9fa;
     border: 1px solid #eef2f5;
