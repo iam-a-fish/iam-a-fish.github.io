@@ -14,6 +14,7 @@ const screenTop = document.getElementById('Top');
 const screenProfile = document.getElementById('Profile');
 const screenWorks = document.getElementById('Works');
 const screenContact = document.getElementById('Contact');
+let openingSharedWork = false;
 
 // 自作プレイヤーの要素もバケツに登録
 const myAudio = document.getElementById('my-audio');
@@ -25,6 +26,16 @@ function allHide() {
     screenProfile.style.display = 'none';
     screenWorks.style.display = 'none';
     screenContact.style.display = 'none';
+}
+
+function scrollToPageTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function clearSharedWorkHash() {
+    if (!openingSharedWork && /^#work-\d+$/.test(window.location.hash)) {
+        window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+    }
 }
 
 // すべてのメディア（動画・音楽）を止める共通の命令
@@ -45,30 +56,38 @@ function stopAllMedia() {
 // 4. 各メニューがクリックされたときの動き
 btnTop.addEventListener('click', function(e) {
     e.preventDefault(); 
+    clearSharedWorkHash();
     stopAllMedia(); // 画面を離れるので音を止める
     allHide();          
     screenTop.style.display = 'block'; 
+    scrollToPageTop();
 });
 
 btnProfile.addEventListener('click', function(e) {
     e.preventDefault();
+    clearSharedWorkHash();
     stopAllMedia(); // 画面を離れるので音を止める
     allHide();
     screenProfile.style.display = 'block'; 
+    scrollToPageTop();
 });
 
 btnWorks.addEventListener('click', function(e) {
     e.preventDefault();
+    clearSharedWorkHash();
     stopAllMedia(); // 画面を離れるので音を止める
     allHide();
     screenWorks.style.display = 'block'; 
+    scrollToPageTop();
 });
 
 btnContact.addEventListener('click', function(e) {
     e.preventDefault();
+    clearSharedWorkHash();
     stopAllMedia(); // 画面を離れるので音を止める
     allHide();
     screenContact.style.display = 'block'; 
+    scrollToPageTop();
 });
 
 topProfile.addEventListener('click', function(e) {
@@ -642,7 +661,9 @@ function openSharedWorkFromHash() {
     const workId = window.location.hash.slice(1);
     if (!/^work-\d+$/.test(workId)) return;
 
+    openingSharedWork = true;
     btnWorks.click();
+    openingSharedWork = false;
     includedTags.clear();
     document.querySelectorAll('.filter-btn').forEach(button => {
         button.classList.remove('included');

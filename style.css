@@ -487,11 +487,11 @@ button:active,
 }
 
 .work-card-highlight {
-    animation: work-card-highlight 2.8s ease-out;
+    animation: work-card-highlight 3.2s ease-out;
 }
 
 @keyframes work-card-highlight {
-    0%, 35% {
+    0%, 20% {
         background: #e2f0fc;
         border-color: #aaccee;
         box-shadow: 0 0 0 4px rgba(170, 204, 238, 0.55);
