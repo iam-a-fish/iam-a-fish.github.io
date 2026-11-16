@@ -5,6 +5,8 @@ const btnTop = document.getElementById('Menu-Top');
 const btnProfile = document.getElementById('Menu-Profile');
 const btnWorks = document.getElementById('Menu-Works');
 const btnContact = document.getElementById('Menu-Contact');
+const topProfile = document.getElementById('Top-Profile');
+const topWorks = document.getElementById('Top-Works');
 const topContact = document.getElementById('Top-Contact');
 
 // 2. 表示を切り替える画面の箱（divタグ）をバケツに登録
@@ -69,11 +71,20 @@ btnContact.addEventListener('click', function(e) {
     screenContact.style.display = 'block'; 
 });
 
+topProfile.addEventListener('click', function(e) {
+    e.preventDefault();
+    btnProfile.click();
+});
+
+topWorks.addEventListener('click', function(e) {
+    e.preventDefault();
+    btnWorks.click();
+});
+
 topContact.addEventListener('click', function(e) {
     e.preventDefault();
     btnContact.click();
 });
-
 
 // === 5. JSONデータの読み込み・自動生成・ソート・期間指定（完全版） ===
 

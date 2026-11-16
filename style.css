@@ -107,16 +107,65 @@ button:hover {
 }
 
 #Top .top-intro h1 {
-    margin-bottom: 8px;
+    margin: 0 0 16px;
 }
 
-#Top .top-intro p {
-    color: #555;
-    margin: 0 0 18px;
+.top-intro-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 540px;
+    margin: 0 auto;
+    gap: 12px;
+}
+
+.top-intro-actions .top-btn {
+    display: flex;
+    box-sizing: border-box;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 6px;
+    color: #222222 !important;
+    font-size: 14px;
+    text-align: center;
+}
+
+.top-intro-actions .top-btn:hover {
+    background-color: #aaccee;
+    border-color: #aaccee;
+    color: #ffffff !important;
+}
+
+button:focus-visible,
+.top-btn:focus-visible,
+.mail-btn:focus-visible,
+.skeb-btn:focus-visible,
+.work-link:focus-visible,
+.download-link:focus-visible,
+button:active,
+.top-btn:active,
+.mail-btn:active,
+.skeb-btn:active,
+.work-link:active,
+.download-link:active {
+    border-color: #aaccee;
+    outline: 2px solid #aaccee;
+    outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+    .top-intro-actions {
+        grid-template-columns: 1fr;
+        max-width: 280px;
+    }
 }
 
 #Top .youtube-subscribe {
     display: flex;
+    align-items: center;
     justify-content: center;
     margin: 16px auto 28px;
 }
@@ -348,22 +397,19 @@ button:hover {
     transition: 0.2s;
 }
 .filter-btn:hover {
-    background-color: #aaccee;
+    background-color: #c3d9ee;
     color: #FFFFFF;
-    border-color: #aaccee;
+    border-color: #c3d9ee;
 }
 .filter-btn.included {
     background-color: #aaccee;
-    border-color: #79aeda;
+    border-color: #aaccee;
     color: #FFFFFF;
 }
 .filter-btn:focus-visible {
     background-color: #aaccee;
     border-color: #aaccee;
     color: #FFFFFF;
-}
-.filter-btn.included:focus-visible {
-    border-color: #79aeda;
 }
 .filter-clear-btn:focus-visible {
     background-color: #aaccee;
