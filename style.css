@@ -302,9 +302,29 @@ button:hover {
 
 .tag-filter-container {
     margin-bottom: 30px;
+    text-align: center;
+}
+.filter-clear-btn {
+    background-color: #000;
+    border: 1px solid #000;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    margin-top: 12px;
+    padding: 8px 20px;
+    transition: 0.3s;
+}
+.filter-clear-btn:hover {
+    background-color: #aaccee;
+    border-color: #aaccee;
+    color: #fff;
+}
+.tag-filter-buttons {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
 }
 .filter-btn {
@@ -317,65 +337,146 @@ button:hover {
     cursor: pointer;
     transition: 0.2s;
 }
-.filter-btn.active, .filter-btn:hover {
+.filter-btn:hover {
     background-color: #aaccee;
     color: #FFFFFF;
     border-color: #aaccee;
 }
-.audio-player {
-    background: #f7f9fa; 
-    border: 1px solid #eef2f5;
-    padding: 25px;
-    border-radius: 12px;
-    margin: 0 auto 30px auto;
-    max-width: 340px;
-    box-sizing: border-box;
-    transition: opacity 0.3s, transform 0.3s;
+.filter-btn.included {
+    background-color: #aaccee;
+    border-color: #79aeda;
+    color: #FFFFFF;
+}
+.filter-btn:focus-visible {
+    background-color: #aaccee;
+    border-color: #aaccee;
+    color: #FFFFFF;
+}
+.filter-btn.included:focus-visible {
+    border-color: #79aeda;
+}
+.filter-clear-btn:focus-visible {
+    background-color: #aaccee;
+    border-color: #aaccee;
+    color: #fff;
+}
+.filter-btn:focus-visible,
+.filter-clear-btn:focus-visible {
+    outline: 2px solid #aaccee;
+    outline-offset: 2px;
 }
 
-/* ★変更：画像リンクにホバーした時、少し拡大して「クリックできる感」を出す */
-.img-popup-link {
+#Works {
+    max-width: 1040px;
+}
+
+.work-card {
+    background: #f7f9fa;
+    border: 1px solid #eef2f5;
+    border-radius: 12px;
+    margin: 0 auto 24px;
+    padding: 24px;
+    text-align: left;
+}
+
+.work-main {
+    display: grid;
+    grid-template-columns: minmax(180px, 280px) minmax(0, 1fr);
+    gap: 28px;
+    align-items: center;
+}
+
+.work-image-link {
     display: block;
     overflow: hidden;
     border-radius: 8px;
-}
-.player-img {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    background-color: #ddd;
-    transition: transform 0.3s;
-    display: block;
-}
-.img-popup-link:hover .player-img {
-    transform: scale(1.05); /* マウスを乗せると少しズーム */
+    background: #e8edf1;
 }
 
-.player-info {
-    margin: 15px 0 10px 0;
+.work-image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    transition: transform 0.3s;
 }
-.track-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 0 0 5px 0;
-    color: #000000;
+
+.work-card[data-tags~="YouTube"] .work-image {
+    aspect-ratio: 16 / 9;
 }
-.artist-name {
+
+.work-image-link:hover .work-image {
+    transform: scale(1.04);
+}
+
+.work-date {
+    color: #777;
     font-size: 13px;
-    color: #666666;
-    margin: 0 0 8px 0;
+    letter-spacing: 0.04em;
+    margin: 0 0 8px;
 }
-.player-tags span {
-    display: inline-block;
-    font-size: 11px;
-    color: #aaccee;
-    background: #ffffff;
-    padding: 2px 8px;
-    border-radius: 4px;
+
+.work-title {
+    color: #111;
+    font-size: 24px;
+    line-height: 1.45;
+    margin: 0 0 8px;
+    overflow-wrap: anywhere;
+}
+
+.work-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 18px;
+}
+
+.work-tags span {
+    color: #4a90e2;
+    background: #fff;
     border: 1px solid #eef2f5;
-    margin-right: 4px;
+    border-radius: 4px;
+    font-size: 12px;
+    padding: 3px 9px;
 }
+
+.work-description {
+    color: #444;
+    font-size: 14px;
+    line-height: 1.7;
+    margin: 0 0 18px;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+}
+
+.work-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.work-link {
+    display: inline-block;
+    border: 1px solid #111;
+    border-radius: 20px;
+    color: #111;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 7px 16px;
+}
+
+.work-link:hover {
+    background: #aaccee;
+    border-color: #aaccee;
+    color: #fff;
+}
+
+.work-audio {
+    border-top: 1px solid #e5eaee;
+    margin-top: 22px;
+    padding-top: 16px;
+}
+
 .seek-container {
     display: flex;
     align-items: center;
@@ -432,4 +533,25 @@ button:hover {
 .download-link:hover {
     background-color: #000000;
     color: #ffffff !important;
+}
+
+@media (max-width: 600px) {
+    .work-card {
+        padding: 16px;
+    }
+
+    .work-main {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .work-image-link {
+        max-width: 360px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .work-title {
+        font-size: 20px;
+    }
 }

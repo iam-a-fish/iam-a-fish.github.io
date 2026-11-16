@@ -88,7 +88,39 @@ btnContact.addEventListener('click', function(e) {
 // === 5. JSONデータの読み込み・自動生成・ソート・期間指定（完全版） ===
 
 function parseJsonc(text) {
-    const cleaned = text.replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '$1');
+    let cleaned = '';
+    let inString = false;
+    let escaped = false;
+
+    for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        const next = text[i + 1];
+
+        if (inString) {
+            cleaned += char;
+            if (escaped) {
+                escaped = false;
+            } else if (char === '\\') {
+                escaped = true;
+            } else if (char === '"') {
+                inString = false;
+            }
+        } else if (char === '"') {
+            inString = true;
+            cleaned += char;
+        } else if (char === '/' && next === '/') {
+            while (i < text.length && text[i] !== '\n') i++;
+            cleaned += '\n';
+        } else if (char === '/' && next === '*') {
+            i += 2;
+            while (i < text.length && !(text[i] === '*' && text[i + 1] === '/')) i++;
+            if (i >= text.length) throw new SyntaxError('Unterminated JSONC comment');
+            i++;
+        } else {
+            cleaned += char;
+        }
+    }
+
     return JSON.parse(cleaned);
 }
 
@@ -170,30 +202,64 @@ function setupAudioPlayer(player) {
 
 // グローバル変数で現在の状態と全データを保持する
 let worksData = [];
-let currentFilterTag = 'all';
+const includedTags = new Set();
+
+function matchesTagFilter(item) {
+    const tags = Array.isArray(item.tags) ? item.tags : [];
+    return [...includedTags].every(tag => tags.includes(tag));
+}
 
 // タグ検索ボタンを自動生成する関数
 function createTagFilterButtons(allUniqueTags) {
     const filterContainer = document.getElementById('tag-filter-container');
     if (!filterContainer) return;
 
-    let buttonsHtml = `<button class="filter-btn active" data-target="all">すべて</button>`;
-    allUniqueTags.forEach(tag => {
-        buttonsHtml += `<button class="filter-btn" data-target="${tag}">#${tag}</button>`;
-    });
-    filterContainer.innerHTML = buttonsHtml;
+    filterContainer.innerHTML = '';
 
-    const filterButtons = filterContainer.querySelectorAll('.filter-btn');
-    filterButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-            currentFilterTag = this.getAttribute('data-target');
-            
-            // タグが切り替わったら音を止めて再描画
+    const clearButton = document.createElement('button');
+    clearButton.type = 'button';
+    clearButton.className = 'filter-clear-btn';
+    clearButton.textContent = 'タグ選択をクリア';
+    clearButton.addEventListener('click', () => {
+        includedTags.clear();
+        buttons.querySelectorAll('.filter-btn').forEach(button => {
+            updateButton(button, button.dataset.tag);
+        });
+        stopAllMedia();
+        updateWorksDisplay();
+    });
+    const buttons = document.createElement('div');
+    buttons.className = 'tag-filter-buttons';
+    filterContainer.appendChild(buttons);
+    filterContainer.appendChild(clearButton);
+
+    const updateButton = (button, tag) => {
+        const isIncluded = includedTags.has(tag);
+        button.classList.toggle('included', isIncluded);
+        button.setAttribute('aria-pressed', String(isIncluded));
+        button.setAttribute('aria-label', `${isIncluded ? '選択中' : '未選択'}: ${tag}`);
+        button.textContent = `#${tag}`;
+    };
+
+    allUniqueTags.forEach(tag => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'filter-btn';
+        button.dataset.tag = tag;
+        button.title = 'タグで絞り込む';
+        updateButton(button, tag);
+        button.addEventListener('click', () => {
+            if (includedTags.has(tag)) {
+                includedTags.delete(tag);
+            } else {
+                includedTags.add(tag);
+            }
+
+            updateButton(button, tag);
             stopAllMedia();
             updateWorksDisplay();
         });
+        buttons.appendChild(button);
     });
 }
 
@@ -213,9 +279,7 @@ function updateWorksDisplay() {
     // 1. データのコピーを作って条件で絞り込む(filter)
     let filteredData = worksData.filter(item => {
         // ① タグでの絞り込み
-        if (currentFilterTag !== 'all' && !item.tags.includes(currentFilterTag)) {
-            return false;
-        }
+        if (!matchesTagFilter(item)) return false;
 
         // ② 期間指定での絞り込み
         const itemDate = new Date(item.date);
@@ -259,7 +323,6 @@ function updateWorksDisplay() {
             <div class="player-info">
                 ${dateHtml}
                 <p class="track-title">${item.title}</p>
-                <p class="artist-name"><a href="${item.artistUrl}" target="_blank">${item.artist}</a></p>
                 <p class="player-tags">${tagsHtml}</p>
             </div>
         `;
@@ -316,11 +379,14 @@ function initializeControls() {
     });
 }
 
-// 実際に works.json を読み込んで画面を作るメイン処理（画像クリック切り替え対応版）
+// 実際に works.json を読み込んで画面を作るメイン処理
 fetch('./works.json')
-    .then(response => response.text())
+    .then(response => {
+        if (!response.ok) throw new Error(`works.json: HTTP ${response.status}`);
+        return response.text();
+    })
     .then(text => {
-        worksData = parseJsonc(text); // グローバルバケツに保存
+        worksData = parseJsonc(text);
 
         // タグボタン用のセットを作成
         const tagSet = new Set();
@@ -355,7 +421,7 @@ function updateWorksDisplay() {
     const endDateVal = document.getElementById('date-end').value;
 
     let filteredData = worksData.filter(item => {
-        if (currentFilterTag !== 'all' && !item.tags.includes(currentFilterTag)) return false;
+        if (!matchesTagFilter(item)) return false;
         
         const itemDate = new Date(item.date);
         if (startDateVal) {
@@ -375,99 +441,126 @@ function updateWorksDisplay() {
     });
 
     filteredData.forEach(item => {
-        const tagsAttr = item.tags.join(' ');
-        const tagsHtml = item.tags.map(t => `<span>#${t}</span>`).join(' ');
-        const dateHtml = `<p class="player-date">${item.date.replace(/-/g, '/')}</p>`;
+        const tags = Array.isArray(item.tags) ? item.tags : [];
+        const workCard = document.createElement('article');
+        workCard.className = 'work-card';
+        workCard.dataset.tags = tags.join(' ');
 
-        // ★追加：画像クリック時のリンク先を判定するロジック
-        let targetHref = item.image; // デフォルトは原寸画像URL
-        if (item.imageClickType === 'link' && item.imageClickUrl) {
-            targetHref = item.imageClickUrl; // 設定があれば外部リンクURLに変える
+        const targetHref = item.imageClickType === 'link' && item.imageClickUrl
+            ? item.imageClickUrl
+            : item.image;
+        const workMain = document.createElement('div');
+        workMain.className = 'work-main';
+
+        const imageLink = document.createElement('a');
+        imageLink.href = targetHref;
+        imageLink.target = '_blank';
+        imageLink.rel = 'noopener noreferrer';
+        imageLink.className = 'work-image-link';
+
+        const image = document.createElement('img');
+        image.alt = item.title;
+        image.className = 'work-image';
+        image.src = item.image;
+        imageLink.appendChild(image);
+        workMain.appendChild(imageLink);
+
+        const workInfo = document.createElement('div');
+        workInfo.className = 'work-info';
+
+        const date = document.createElement('p');
+        date.className = 'work-date';
+        date.textContent = item.date.replace(/-/g, '/');
+
+        const title = document.createElement('h2');
+        title.className = 'work-title';
+        title.textContent = item.title;
+
+        const tagsList = document.createElement('div');
+        tagsList.className = 'work-tags';
+        tags.forEach(tag => {
+            const tagLabel = document.createElement('span');
+            tagLabel.textContent = `#${tag}`;
+            tagsList.appendChild(tagLabel);
+        });
+
+        workInfo.append(date, title, tagsList);
+
+        if (item.description) {
+            const description = document.createElement('p');
+            description.className = 'work-description';
+            description.textContent = item.description;
+            workInfo.appendChild(description);
         }
 
-        const playerDiv = document.createElement('div');
-        playerDiv.className = 'audio-player';
-        playerDiv.setAttribute('data-tags', tagsAttr);
+        const workLinks = document.createElement('div');
+        workLinks.className = 'work-links';
 
-        // hrefの中身を先ほど判定した「targetHref」に差し替え
-        let innerContent = `
-            <a href="${targetHref}" target="_blank" class="img-popup-link">
-                <img src="${item.image}" alt="${item.title}" class="player-img">
-            </a>
-            <div class="player-info">
-                ${dateHtml}
-                <p class="track-title">${item.title}</p>
-                <p class="artist-name"><a href="${item.artistUrl}" target="_blank">${item.artist}</a></p>
-                <p class="player-tags">${tagsHtml}</p>
-            </div>
-        `;
+        const hasWorkLink = item.imageClickType === 'link' && item.imageClickUrl;
+        if (hasWorkLink && (!item.niconicoId || item.youtubeId)) {
+            const workLink = document.createElement('a');
+            workLink.href = item.imageClickUrl;
+            workLink.target = '_blank';
+            workLink.rel = 'noopener noreferrer';
+            workLink.className = 'work-link';
+            workLink.textContent = item.youtubeId
+                ? 'YouTubeで見る ↗'
+                : item.unityroomUrl
+                    ? 'Unityroomで遊ぶ ↗'
+                    : '作品を見る ↗';
+            workLinks.appendChild(workLink);
+        }
 
-        if (item.audio && item.audio !== "") {
-            innerContent += `
+        if (item.niconicoId) {
+            const niconicoLink = document.createElement('a');
+            niconicoLink.href = `https://www.nicovideo.jp/watch/${encodeURIComponent(item.niconicoId)}`;
+            niconicoLink.target = '_blank';
+            niconicoLink.rel = 'noopener noreferrer';
+            niconicoLink.className = 'work-link';
+            niconicoLink.textContent = 'ニコニコで見る ↗';
+            workLinks.appendChild(niconicoLink);
+        }
+
+        if (workLinks.childElementCount) {
+            workInfo.appendChild(workLinks);
+        }
+
+        workMain.appendChild(workInfo);
+        workCard.appendChild(workMain);
+
+        if (item.audio) {
+            const audioSection = document.createElement('div');
+            audioSection.className = 'work-audio';
+            audioSection.innerHTML = `
                 <div class="seek-container">
                     <span class="current-time">0:00</span>
-                    <input type="range" class="seek-bar" value="0" min="0" max="100">
+                    <input type="range" class="seek-bar" value="0" min="0" max="100" aria-label="再生位置">
                     <span class="duration-time">0:00</span>
                 </div>
                 <div class="player-controls">
                     <button class="custom-play-btn">▶ 再生</button>
-            `;
-
-            if (item.download) {
-                const fileName = item.audio.split('/').pop();
-                innerContent += `<a href="${item.audio}" download="${fileName}" target="_blank" class="download-link">⬇ DL</a>`;
-            }
-
-            innerContent += `
                 </div>
                 <audio class="custom-audio" src="${item.audio}" preload="metadata"></audio>
             `;
+
+            if (item.download) {
+                const downloadLink = document.createElement('a');
+                downloadLink.href = item.audio;
+                downloadLink.download = item.audio.split('/').pop();
+                downloadLink.target = '_blank';
+                downloadLink.rel = 'noopener noreferrer';
+                downloadLink.className = 'download-link';
+                downloadLink.textContent = '⬇ ダウンロード';
+                audioSection.querySelector('.player-controls').appendChild(downloadLink);
+            }
+
+            workCard.appendChild(audioSection);
+            setupAudioPlayer(workCard);
         }
 
-        playerDiv.innerHTML = innerContent;
-        container.appendChild(playerDiv);
-
-        setupAudioPlayer(playerDiv);
+        container.appendChild(workCard);
     });
 }
-// （※これ以降の 「6. タグ検索（フィルター）機能の処理」 や 「stopAllMedia()」 は、前回提示したコードをそのまま下に続けて貼り付ければバッチリ動作します！）
-
-
-// === 6. タグ検索（フィルター）機能の処理 ===
-const filterButtons = document.querySelectorAll('.filter-btn');
-
-filterButtons.forEach(button => {
-    button.addEventListener('click', function() {
-        // ボタンの「アクティブ（青色）」の状態を切り替える
-        filterButtons.forEach(btn => btn.classList.remove('active'));
-        this.classList.add('active');
-
-        const targetTag = this.getAttribute('data-target');
-
-        players.forEach(player => {
-            // 各プレイヤーに埋め込まれた data-tags の文字列を取得
-            const playerTagsString = player.getAttribute('data-tags') || "";
-            // 空白で区切って配列にする (例: ["明るい", "ポップ"])
-            const playerTagsArray = playerTagsString.split(' ');
-
-            if (targetTag === 'all' || playerTagsArray.includes(targetTag)) {
-                // 条件に合う曲は表示する
-                player.style.display = 'block';
-                player.style.opacity = '1';
-                player.style.transform = 'scale(1)';
-            } else {
-                // 条件に合わない曲は非表示にして、流れている音も念のため止める
-                player.style.display = 'none';
-                const audio = player.querySelector('.custom-audio');
-                const playBtn = player.querySelector('.custom-play-btn');
-                if (audio) {
-                    audio.pause();
-                    if(playBtn) playBtn.textContent = '▶ 再生';
-                }
-            }
-        });
-    });
-});
 
 
 // 前のメニュー切り替え時に音を止める「stopAllMedia」関数も、
