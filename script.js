@@ -205,6 +205,53 @@ function setupAudioPlayer(player) {
 let worksData = [];
 const includedTags = new Set();
 
+const imageModal = document.createElement('div');
+imageModal.className = 'image-modal';
+imageModal.hidden = true;
+imageModal.setAttribute('role', 'dialog');
+imageModal.setAttribute('aria-modal', 'true');
+imageModal.setAttribute('aria-label', '作品画像');
+
+const imageModalClose = document.createElement('button');
+imageModalClose.type = 'button';
+imageModalClose.className = 'image-modal-close';
+imageModalClose.setAttribute('aria-label', '画像を閉じる');
+imageModalClose.textContent = '×';
+
+const imageModalImage = document.createElement('img');
+imageModalImage.className = 'image-modal-image';
+
+imageModal.append(imageModalClose, imageModalImage);
+document.body.appendChild(imageModal);
+
+let imageModalTrigger = null;
+let previousBodyOverflow = '';
+
+function closeImageModal() {
+    if (imageModal.hidden) return;
+    imageModal.hidden = true;
+    document.body.style.overflow = previousBodyOverflow;
+    if (imageModalTrigger) imageModalTrigger.focus();
+}
+
+imageModalClose.addEventListener('click', closeImageModal);
+imageModal.addEventListener('click', event => {
+    if (event.target === imageModal) closeImageModal();
+});
+document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeImageModal();
+});
+
+function openImageModal(image, trigger) {
+    imageModalImage.src = image.currentSrc || image.src;
+    imageModalImage.alt = image.alt;
+    imageModalTrigger = trigger;
+    previousBodyOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    imageModal.hidden = false;
+    imageModalClose.focus();
+}
+
 function matchesTagFilter(item) {
     const tags = Array.isArray(item.tags) ? item.tags : [];
     return includedTags.size === 0 || [...includedTags].some(tag => tags.includes(tag));
@@ -405,6 +452,7 @@ fetch('./works.json')
 
         // 最初の画面表示
         updateWorksDisplay();
+        openSharedWorkFromHash();
     })
     .catch(error => {
         console.error('JSONの読み込みに失敗しました:', error);
@@ -446,18 +494,45 @@ function updateWorksDisplay() {
         const workCard = document.createElement('article');
         workCard.className = 'work-card';
         workCard.dataset.tags = tags.join(' ');
+        workCard.id = `work-${worksData.indexOf(item)}`;
 
-        const targetHref = item.imageClickType === 'link' && item.imageClickUrl
-            ? item.imageClickUrl
-            : item.image;
+        const shareButton = document.createElement('button');
+        shareButton.type = 'button';
+        shareButton.className = 'work-card-share';
+        shareButton.textContent = '共有';
+        shareButton.setAttribute('aria-label', `${item.title}の共有リンクをコピー`);
+        shareButton.addEventListener('click', () => {
+            const shareUrl = new URL(window.location.href);
+            shareUrl.hash = workCard.id;
+
+            if (!navigator.clipboard || !navigator.clipboard.writeText) {
+                shareButton.textContent = 'コピー不可';
+                return;
+            }
+
+            navigator.clipboard.writeText(shareUrl.href).then(() => {
+                shareButton.textContent = 'コピー済み';
+                window.setTimeout(() => {
+                    shareButton.textContent = '共有';
+                }, 1800);
+            }).catch(error => {
+                console.error('共有リンクをコピーできませんでした:', error);
+                shareButton.textContent = 'コピー失敗';
+            });
+        });
+        workCard.appendChild(shareButton);
+
         const workMain = document.createElement('div');
         workMain.className = 'work-main';
 
         const imageLink = document.createElement('a');
-        imageLink.href = targetHref;
-        imageLink.target = '_blank';
-        imageLink.rel = 'noopener noreferrer';
+        imageLink.href = item.image;
         imageLink.className = 'work-image-link';
+        imageLink.setAttribute('aria-label', `${item.title}の画像を拡大`);
+        imageLink.addEventListener('click', event => {
+            event.preventDefault();
+            openImageModal(image, imageLink);
+        });
 
         const image = document.createElement('img');
         image.alt = item.title;
@@ -562,6 +637,31 @@ function updateWorksDisplay() {
         container.appendChild(workCard);
     });
 }
+
+function openSharedWorkFromHash() {
+    const workId = window.location.hash.slice(1);
+    if (!/^work-\d+$/.test(workId)) return;
+
+    btnWorks.click();
+    includedTags.clear();
+    document.querySelectorAll('.filter-btn').forEach(button => {
+        button.classList.remove('included');
+        button.setAttribute('aria-pressed', 'false');
+        button.setAttribute('aria-label', `未選択: ${button.dataset.tag}`);
+    });
+    document.getElementById('date-start').value = '';
+    document.getElementById('date-end').value = '';
+    updateWorksDisplay();
+
+    const workCard = document.getElementById(workId);
+    if (workCard) {
+        window.requestAnimationFrame(() => {
+            workCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+    }
+}
+
+window.addEventListener('hashchange', openSharedWorkFromHash);
 
 
 // 前のメニュー切り替え時に音を止める「stopAllMedia」関数も、

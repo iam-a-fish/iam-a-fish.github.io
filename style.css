@@ -477,12 +477,34 @@ button:active,
 }
 
 .work-card {
+    position: relative;
     background: #f7f9fa;
     border: 1px solid #eef2f5;
     border-radius: 12px;
     margin: 0 auto 24px;
-    padding: 24px;
+    padding: 64px 24px 24px;
     text-align: left;
+}
+
+.work-card-share {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    padding: 6px 14px;
+    border: 1px solid #111;
+    border-radius: 20px;
+    background: #fff;
+    color: #111;
+    font-size: 13px;
+    letter-spacing: 0;
+    line-height: 1.4;
+    transition: 0.2s;
+}
+
+.work-card-share:hover {
+    background: #aaccee;
+    border-color: #aaccee;
+    color: #fff;
 }
 
 .work-main {
@@ -495,8 +517,8 @@ button:active,
 .work-image-link {
     display: block;
     overflow: hidden;
-    border-radius: 8px;
     background: #e8edf1;
+    cursor: zoom-in;
 }
 
 .work-image {
@@ -513,6 +535,54 @@ button:active,
 
 .work-image-link:hover .work-image {
     transform: scale(1.04);
+}
+
+.image-modal,
+.image-modal[hidden] {
+    display: none;
+}
+
+.image-modal:not([hidden]) {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.88);
+    cursor: zoom-out;
+}
+
+.image-modal-image {
+    display: block;
+    max-width: min(100%, 1400px);
+    max-height: 90vh;
+    object-fit: contain;
+    cursor: default;
+}
+
+.image-modal-close {
+    position: fixed;
+    top: 16px;
+    right: 20px;
+    z-index: 1;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.45);
+    color: #fff;
+    font-size: 30px;
+    line-height: 1;
+    letter-spacing: 0;
+}
+
+.image-modal-close:hover {
+    background: #aaccee;
+    border-color: #aaccee;
+    color: #fff;
 }
 
 .work-date {
@@ -643,7 +713,7 @@ button:active,
 
 @media (max-width: 600px) {
     .work-card {
-        padding: 16px;
+        padding: 56px 16px 16px;
     }
 
     .work-main {
