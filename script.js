@@ -1,19 +1,3 @@
-// === メインサイトへの切り替え用 ===
-const iriguchi = document.getElementById('Enter');
-const honpen = document.getElementById('Main');
-const botan = document.getElementById('Button');
-
-function gachan() {
-    iriguchi.style.display = 'none';  
-    honpen.style.display = 'block';   
-}
-
-botan.addEventListener('click', function() { gachan(); });
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') { gachan(); }
-});
-
-
 // === すべてのページ切り替え処理 ===
 
 // 1. メニューのボタン（aタグ）をバケツに登録
@@ -21,6 +5,7 @@ const btnTop = document.getElementById('Menu-Top');
 const btnProfile = document.getElementById('Menu-Profile');
 const btnWorks = document.getElementById('Menu-Works');
 const btnContact = document.getElementById('Menu-Contact');
+const topContact = document.getElementById('Top-Contact');
 
 // 2. 表示を切り替える画面の箱（divタグ）をバケツに登録
 const screenTop = document.getElementById('Top');
@@ -82,6 +67,11 @@ btnContact.addEventListener('click', function(e) {
     stopAllMedia(); // 画面を離れるので音を止める
     allHide();
     screenContact.style.display = 'block'; 
+});
+
+topContact.addEventListener('click', function(e) {
+    e.preventDefault();
+    btnContact.click();
 });
 
 
