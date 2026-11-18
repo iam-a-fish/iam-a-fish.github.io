@@ -5,9 +5,6 @@ const btnTop = document.getElementById('Menu-Top');
 const btnProfile = document.getElementById('Menu-Profile');
 const btnWorks = document.getElementById('Menu-Works');
 const btnContact = document.getElementById('Menu-Contact');
-const topProfile = document.getElementById('Top-Profile');
-const topWorks = document.getElementById('Top-Works');
-const topContact = document.getElementById('Top-Contact');
 
 // 2. 表示を切り替える画面の箱（divタグ）をバケツに登録
 const screenTop = document.getElementById('Top');
@@ -30,6 +27,23 @@ function allHide() {
 
 function scrollToPageTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateMenubarScrollState() {
+    document.getElementById('Menubar').classList.toggle('is-scrolled', window.scrollY > 48);
+}
+
+window.addEventListener('scroll', updateMenubarScrollState, { passive: true });
+updateMenubarScrollState();
+
+function setCurrentMenu(currentMenu) {
+    [btnTop, btnProfile, btnWorks, btnContact].forEach(menu => {
+        if (menu === currentMenu) {
+            menu.setAttribute('aria-current', 'page');
+        } else {
+            menu.removeAttribute('aria-current');
+        }
+    });
 }
 
 function clearSharedWorkHash() {
@@ -60,6 +74,7 @@ btnTop.addEventListener('click', function(e) {
     stopAllMedia(); // 画面を離れるので音を止める
     allHide();          
     screenTop.style.display = 'block'; 
+    setCurrentMenu(btnTop);
     scrollToPageTop();
 });
 
@@ -69,6 +84,7 @@ btnProfile.addEventListener('click', function(e) {
     stopAllMedia(); // 画面を離れるので音を止める
     allHide();
     screenProfile.style.display = 'block'; 
+    setCurrentMenu(btnProfile);
     scrollToPageTop();
 });
 
@@ -78,6 +94,7 @@ btnWorks.addEventListener('click', function(e) {
     stopAllMedia(); // 画面を離れるので音を止める
     allHide();
     screenWorks.style.display = 'block'; 
+    setCurrentMenu(btnWorks);
     scrollToPageTop();
 });
 
@@ -87,22 +104,8 @@ btnContact.addEventListener('click', function(e) {
     stopAllMedia(); // 画面を離れるので音を止める
     allHide();
     screenContact.style.display = 'block'; 
+    setCurrentMenu(btnContact);
     scrollToPageTop();
-});
-
-topProfile.addEventListener('click', function(e) {
-    e.preventDefault();
-    btnProfile.click();
-});
-
-topWorks.addEventListener('click', function(e) {
-    e.preventDefault();
-    btnWorks.click();
-});
-
-topContact.addEventListener('click', function(e) {
-    e.preventDefault();
-    btnContact.click();
 });
 
 // === 5. JSONデータの読み込み・自動生成・ソート・期間指定（完全版） ===
@@ -223,6 +226,17 @@ function setupAudioPlayer(player) {
 // グローバル変数で現在の状態と全データを保持する
 let worksData = [];
 const includedTags = new Set();
+let activeWorksTab = 'releases';
+
+const gameWorkTags = new Set(['Unityroom', 'Steam', 'ノベルゲームコレクション']);
+
+function isGameWork(item) {
+    return Array.isArray(item.tags) && item.tags.some(tag => gameWorkTags.has(tag));
+}
+
+function getActiveWorks() {
+    return worksData;
+}
 
 const imageModal = document.createElement('div');
 imageModal.className = 'image-modal';
@@ -274,6 +288,24 @@ function openImageModal(image, trigger) {
 function matchesTagFilter(item) {
     const tags = Array.isArray(item.tags) ? item.tags : [];
     return includedTags.size === 0 || [...includedTags].some(tag => tags.includes(tag));
+}
+
+function setWorksTab(tab) {
+    activeWorksTab = tab;
+
+    const releasesTab = document.getElementById('works-tab-releases');
+    const gamesTab = document.getElementById('works-tab-games');
+    const panel = document.getElementById('works-tab-panel');
+    const releaseContent = document.getElementById('work-release-content');
+    const gameContent = document.getElementById('game-release-content');
+    const title = document.getElementById('work-release-title');
+    const selectedTab = tab === 'games' ? gamesTab : releasesTab;
+    releasesTab.setAttribute('aria-selected', String(tab === 'releases'));
+    gamesTab.setAttribute('aria-selected', String(tab === 'games'));
+    panel.setAttribute('aria-labelledby', selectedTab.id);
+    releaseContent.hidden = tab === 'games';
+    gameContent.hidden = tab !== 'games';
+    title.textContent = '配信リリース';
 }
 
 // タグ検索ボタンを自動生成する関数
@@ -425,6 +457,31 @@ function updateWorksDisplay() {
 
 // 初期化用の各種イベントリスナーを設定する関数
 function initializeControls() {
+    const worksTabs = [
+        document.getElementById('works-tab-releases'),
+        document.getElementById('works-tab-games')
+    ];
+    worksTabs[0].addEventListener('click', () => {
+        if (activeWorksTab !== 'releases') setWorksTab('releases');
+    });
+    worksTabs[1].addEventListener('click', () => {
+        if (activeWorksTab !== 'games') setWorksTab('games');
+    });
+    worksTabs.forEach((tab, index) => {
+        tab.addEventListener('keydown', event => {
+            let nextIndex = index;
+            if (event.key === 'ArrowRight') nextIndex = (index + 1) % worksTabs.length;
+            else if (event.key === 'ArrowLeft') nextIndex = (index + worksTabs.length - 1) % worksTabs.length;
+            else if (event.key === 'Home') nextIndex = 0;
+            else if (event.key === 'End') nextIndex = worksTabs.length - 1;
+            else return;
+
+            event.preventDefault();
+            worksTabs[nextIndex].focus();
+            worksTabs[nextIndex].click();
+        });
+    });
+
     // 新しい順・古い順のセレクトボックスが変更されたとき
     document.getElementById('sort-select').addEventListener('change', () => {
         updateWorksDisplay();
@@ -447,7 +504,7 @@ function initializeControls() {
 }
 
 // 実際に works.json を読み込んで画面を作るメイン処理
-fetch('./works.json')
+fetch('./works.json', { cache: 'no-cache' })
     .then(response => {
         if (!response.ok) throw new Error(`works.json: HTTP ${response.status}`);
         return response.text();
@@ -455,18 +512,13 @@ fetch('./works.json')
     .then(text => {
         worksData = parseJsonc(text);
 
-        // タグボタン用のセットを作成
-        const tagSet = new Set();
-        worksData.forEach(item => {
-            if (item.tags && Array.isArray(item.tags)) {
-                item.tags.forEach(tag => tagSet.add(tag));
-            }
-        });
-
         // コントロールパネルの監視を開始
         initializeControls();
 
-        // タグ検索ボタンを自動生成
+        const tagSet = new Set();
+        getActiveWorks().forEach(item => {
+            if (Array.isArray(item.tags)) item.tags.forEach(tag => tagSet.add(tag));
+        });
         createTagFilterButtons(tagSet);
 
         // 最初の画面表示
@@ -488,10 +540,13 @@ function updateWorksDisplay() {
     const startDateVal = document.getElementById('date-start').value;
     const endDateVal = document.getElementById('date-end').value;
 
-    let filteredData = worksData.filter(item => {
+    let filteredData = getActiveWorks().filter(item => {
         if (!matchesTagFilter(item)) return false;
         
-        const itemDate = new Date(item.date);
+        const hasDateRange = startDateVal || endDateVal;
+        const itemDate = item.date ? new Date(item.date) : null;
+        if (hasDateRange && (!itemDate || Number.isNaN(itemDate.getTime()))) return false;
+
         if (startDateVal) {
             const startLimit = new Date(startDateVal);
             if (itemDate < startLimit) return false;
@@ -505,7 +560,16 @@ function updateWorksDisplay() {
     });
 
     filteredData.sort((a, b) => {
-        return sortOrder === 'newest' ? new Date(b.date) - new Date(a.date) : new Date(a.date) - new Date(b.date);
+        const aTime = a.date ? new Date(a.date).getTime() : Number.NaN;
+        const bTime = b.date ? new Date(b.date).getTime() : Number.NaN;
+        const aHasDate = Number.isFinite(aTime);
+        const bHasDate = Number.isFinite(bTime);
+
+        if (!aHasDate || !bHasDate) {
+            return aHasDate === bHasDate ? 0 : aHasDate ? -1 : 1;
+        }
+
+        return sortOrder === 'newest' ? bTime - aTime : aTime - bTime;
     });
 
     filteredData.forEach(item => {
@@ -513,7 +577,8 @@ function updateWorksDisplay() {
         const workCard = document.createElement('article');
         workCard.className = 'work-card';
         workCard.dataset.tags = tags.join(' ');
-        workCard.id = `work-${worksData.indexOf(item)}`;
+        const workIndex = worksData.indexOf(item);
+        workCard.id = `work-${workIndex}`;
 
         const shareButton = document.createElement('button');
         shareButton.type = 'button';
@@ -521,8 +586,7 @@ function updateWorksDisplay() {
         shareButton.textContent = '共有';
         shareButton.setAttribute('aria-label', `${item.title}の共有リンクをコピー`);
         shareButton.addEventListener('click', () => {
-            const shareUrl = new URL(window.location.href);
-            shareUrl.hash = workCard.id;
+            const shareUrl = new URL(`/share/work-${workIndex}.html`, window.location.origin);
 
             if (!navigator.clipboard || !navigator.clipboard.writeText) {
                 shareButton.textContent = 'コピー不可';
@@ -563,9 +627,11 @@ function updateWorksDisplay() {
         const workInfo = document.createElement('div');
         workInfo.className = 'work-info';
 
-        const date = document.createElement('p');
-        date.className = 'work-date';
-        date.textContent = item.date.replace(/-/g, '/');
+        const date = item.date ? document.createElement('p') : null;
+        if (date) {
+            date.className = 'work-date';
+            date.textContent = item.date.replace(/-/g, '/');
+        }
 
         const title = document.createElement('h2');
         title.className = 'work-title';
@@ -579,7 +645,8 @@ function updateWorksDisplay() {
             tagsList.appendChild(tagLabel);
         });
 
-        workInfo.append(date, title, tagsList);
+        if (date) workInfo.appendChild(date);
+        workInfo.append(title, tagsList);
 
         if (item.description) {
             const description = document.createElement('p');
@@ -664,6 +731,10 @@ function openSharedWorkFromHash() {
     openingSharedWork = true;
     btnWorks.click();
     openingSharedWork = false;
+    const sharedItem = worksData[Number(workId.slice('work-'.length))];
+    if (sharedItem) {
+        setWorksTab(isGameWork(sharedItem) ? 'games' : 'releases');
+    }
     includedTags.clear();
     document.querySelectorAll('.filter-btn').forEach(button => {
         button.classList.remove('included');

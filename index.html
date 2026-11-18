@@ -12,27 +12,22 @@
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" /> 
     <title>さかなのさいと</title>
-    <link rel="stylesheet" href="style.css?v=20261116-13">
+    <link rel="stylesheet" href="style.css?v=20261118-23">
 </head>
 <body>
     <div id="Main">
         
         <nav id="Menubar">
-            <a href="#" id="Menu-Top">TOP</a>
-            <a href="#" id="Menu-Profile">PROFILE</a>
-            <a href="#" id="Menu-Works">WORKS</a>
-            <a href="#" id="Menu-Contact">CONTACT</a>
+            <span id="SiteTitle">さかなのさいと</span>
+            <div id="MenuLinks">
+                <a href="#" id="Menu-Top" aria-current="page">トップ</a>
+                <a href="#" id="Menu-Profile">プロフィール</a>
+                <a href="#" id="Menu-Works">作品を見る</a>
+                <a href="#" id="Menu-Contact">依頼・お問い合わせ</a>
+            </div>
         </nav>
 
         <div id="Top">
-            <section class="top-intro" aria-labelledby="top-intro-title">
-                <h1 id="top-intro-title">さかなのさいと</h1>
-                <div class="top-intro-actions">
-                    <a href="#" id="Top-Profile" class="top-btn">プロフィール</a>
-                    <a href="#" id="Top-Works" class="top-btn">作品を見る</a>
-                    <a href="#" id="Top-Contact" class="top-btn">依頼・お問い合わせ</a>
-                </div>
-            </section>
             <h1>最新の動画</h1>
             <iframe id="yt-video" width="560" height="315" 
                 src="https://www.youtube.com/embed/videoseries?list=UULFwEb_ZXxNfzlvfAlGIP6smw&amp;index=0&amp;enablejsapi=1"
@@ -69,7 +64,6 @@
         </div>
 
         <div id="Profile">
-            <h1>PROFILE</h1>
             <h2>魚です、(iam_a_fish)</h2>
             <p>
                 「魚です、」です。「、」まで名前です。<br>
@@ -82,10 +76,14 @@
         </div>
 
         <div id="Works">
-            <h1>WORKS</h1>
-
             <section class="work-release" aria-labelledby="work-release-title">
                 <h2 id="work-release-title">配信リリース</h2>
+                <div class="works-category-tabs" role="tablist" aria-label="作品カテゴリ">
+                    <button id="works-tab-releases" class="works-category-tab" type="button" role="tab" aria-selected="true" aria-controls="works-tab-panel">曲</button>
+                    <button id="works-tab-games" class="works-category-tab" type="button" role="tab" aria-selected="false" aria-controls="works-tab-panel">ゲーム</button>
+                </div>
+                <div id="works-tab-panel" role="tabpanel" aria-labelledby="works-tab-releases">
+                <div id="work-release-content">
                 <div class="work-release-list">
                     <article class="work-release-item">
                         <h3>MIZO（溝）</h3>
@@ -125,6 +123,36 @@
                     <a class="work-link" href="https://big-up.style/artists/202282" target="_blank" rel="noopener noreferrer">BIG UP! アーティストページ ↗</a>
                     <a class="work-link" href="https://www.tunecore.co.jp/artists?id=1177795" target="_blank" rel="noopener noreferrer">TuneCore Japan アーティストページ ↗</a>
                 </div>
+                </div>
+                <div id="game-release-content" hidden>
+                    <div class="work-release-list">
+                        <article class="work-release-item">
+                            <h3>プライマリ・ブルーム</h3>
+                            <p class="game-platform">Steam・2027年発売予定</p>
+                            <p>植物を育て、咲いた花をゲーム内のSNSで広めていくガーデンシミュレーション。</p>
+                            <div class="work-links">
+                                <a class="work-link" href="https://store.steampowered.com/app/5445340/" target="_blank" rel="noopener noreferrer">作品ページを見る ↗</a>
+                            </div>
+                        </article>
+                        <article class="work-release-item">
+                            <h3>ゆめみるサクラの卒業式</h3>
+                            <p class="game-platform">Steam・2026年10月21日発売</p>
+                            <p>会話の選択で分岐し、卒業式を繰り返すたびに物語が変化するノベルゲーム。</p>
+                            <div class="work-links">
+                                <a class="work-link" href="https://store.steampowered.com/app/5292500/?l=japanese" target="_blank" rel="noopener noreferrer">作品ページを見る ↗</a>
+                            </div>
+                        </article>
+                        <article class="work-release-item">
+                            <h3>Sherry＆Bind</h3>
+                            <p class="game-platform">ノベルゲームコレクション</p>
+                            <p>バーを舞台に、会話の選択やミニゲームで物語が分岐するノベルゲーム。</p>
+                            <div class="work-links">
+                                <a class="work-link" href="https://novelgame.jp/games/show/14485" target="_blank" rel="noopener noreferrer">作品ページを見る ↗</a>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                </div>
             </section>
     
             <div id="tag-filter-container" class="tag-filter-container"></div>
@@ -150,7 +178,6 @@
         </div>
 
         <div id="Contact">
-            <h1>CONTACT</h1>
             <h3>お気軽にどうぞ</h3>
             <p class="lead-text">依頼、感想、質問、要望などは、以下よりお送りください。</p>
 
@@ -178,6 +205,6 @@
         </div>
     </div>
 
-    <script src="script.js?v=20261116-5"></script>
+    <script src="script.js?v=20261118-27"></script>
 </body>
 </html>
