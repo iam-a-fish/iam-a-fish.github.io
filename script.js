@@ -228,6 +228,33 @@ let worksData = [];
 const includedTags = new Set();
 let activeWorksTab = 'releases';
 
+const workTagOrder = [
+    '曲',
+    'ゲーム',
+    'インスト',
+    'コンピ',
+    'REMIX',
+    '視聴可能',
+    'ダウンロード可能',
+    'CC BY 4.0',
+    'YouTube',
+    'Niconico',
+    'Unityroom',
+    'Steam',
+    'ノベルゲームコレクション'
+];
+
+function sortWorkTags(tags) {
+    return tags.sort((a, b) => {
+        const aIndex = workTagOrder.indexOf(a);
+        const bIndex = workTagOrder.indexOf(b);
+        if (aIndex === -1 && bIndex === -1) return a.localeCompare(b, 'ja');
+        if (aIndex === -1) return 1;
+        if (bIndex === -1) return -1;
+        return aIndex - bIndex;
+    });
+}
+
 const gameWorkTags = new Set(['Unityroom', 'Steam', 'ノベルゲームコレクション']);
 
 function isGameWork(item) {
@@ -243,7 +270,7 @@ function getWorkTags(item) {
     if (item.audio && !tags.includes('視聴可能')) {
         tags.push('視聴可能');
     }
-    return tags;
+    return sortWorkTags(tags);
 }
 
 const imageModal = document.createElement('div');
@@ -348,7 +375,7 @@ function createTagFilterButtons(allUniqueTags) {
         button.textContent = `#${tag}`;
     };
 
-    allUniqueTags.forEach(tag => {
+    sortWorkTags([...allUniqueTags]).forEach(tag => {
         const button = document.createElement('button');
         button.type = 'button';
         button.className = 'filter-btn';
