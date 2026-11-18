@@ -238,6 +238,14 @@ function getActiveWorks() {
     return worksData;
 }
 
+function getWorkTags(item) {
+    const tags = Array.isArray(item.tags) ? [...item.tags] : [];
+    if (item.audio && !tags.includes('視聴可能')) {
+        tags.push('視聴可能');
+    }
+    return tags;
+}
+
 const imageModal = document.createElement('div');
 imageModal.className = 'image-modal';
 imageModal.hidden = true;
@@ -286,7 +294,7 @@ function openImageModal(image, trigger) {
 }
 
 function matchesTagFilter(item) {
-    const tags = Array.isArray(item.tags) ? item.tags : [];
+    const tags = getWorkTags(item);
     return includedTags.size === 0 || [...includedTags].some(tag => tags.includes(tag));
 }
 
@@ -517,7 +525,7 @@ fetch('./works.json', { cache: 'no-cache' })
 
         const tagSet = new Set();
         getActiveWorks().forEach(item => {
-            if (Array.isArray(item.tags)) item.tags.forEach(tag => tagSet.add(tag));
+            getWorkTags(item).forEach(tag => tagSet.add(tag));
         });
         createTagFilterButtons(tagSet);
 
@@ -573,7 +581,7 @@ function updateWorksDisplay() {
     });
 
     filteredData.forEach(item => {
-        const tags = Array.isArray(item.tags) ? item.tags : [];
+        const tags = getWorkTags(item);
         const workCard = document.createElement('article');
         workCard.className = 'work-card';
         workCard.dataset.tags = tags.join(' ');
