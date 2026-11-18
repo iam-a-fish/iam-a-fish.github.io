@@ -322,7 +322,7 @@ function openImageModal(image, trigger) {
 
 function matchesTagFilter(item) {
     const tags = getWorkTags(item);
-    return includedTags.size === 0 || [...includedTags].some(tag => tags.includes(tag));
+    return includedTags.size === 0 || [...includedTags].every(tag => tags.includes(tag));
 }
 
 function setWorksTab(tab) {
