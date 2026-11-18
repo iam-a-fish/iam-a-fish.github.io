@@ -641,23 +641,25 @@ function updateWorksDisplay() {
         workCard.appendChild(shareButton);
 
         const workMain = document.createElement('div');
-        workMain.className = 'work-main';
+        workMain.className = item.image ? 'work-main' : 'work-main work-main-no-image';
 
-        const imageLink = document.createElement('a');
-        imageLink.href = item.image;
-        imageLink.className = 'work-image-link';
-        imageLink.setAttribute('aria-label', `${item.title}の画像を拡大`);
-        imageLink.addEventListener('click', event => {
-            event.preventDefault();
-            openImageModal(image, imageLink);
-        });
+        if (item.image) {
+            const imageLink = document.createElement('a');
+            imageLink.href = item.image;
+            imageLink.className = 'work-image-link';
+            imageLink.setAttribute('aria-label', `${item.title}の画像を拡大`);
+            imageLink.addEventListener('click', event => {
+                event.preventDefault();
+                openImageModal(image, imageLink);
+            });
 
-        const image = document.createElement('img');
-        image.alt = item.title;
-        image.className = 'work-image';
-        image.src = item.image;
-        imageLink.appendChild(image);
-        workMain.appendChild(imageLink);
+            const image = document.createElement('img');
+            image.alt = item.title;
+            image.className = 'work-image';
+            image.src = item.image;
+            imageLink.appendChild(image);
+            workMain.appendChild(imageLink);
+        }
 
         const workInfo = document.createElement('div');
         workInfo.className = 'work-info';

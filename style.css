@@ -609,6 +609,10 @@ button:active,
     align-items: center;
 }
 
+.work-main-no-image {
+    grid-template-columns: minmax(0, 1fr);
+}
+
 .work-image-link {
     display: block;
     overflow: hidden;
