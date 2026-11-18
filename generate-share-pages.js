@@ -70,6 +70,7 @@ works.forEach((work, index) => {
         <p>${escapeHtml(description)}</p>
         <a href="${escapeHtml(detailUrl)}">ポートフォリオで作品を見る</a>
     </main>
+    <script>window.location.replace(${JSON.stringify(detailUrl)});</script>
 </body>
 </html>
 `;
